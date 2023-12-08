@@ -1,0 +1,98 @@
+@import '../../styles//constants.scss';
+
+.wrapper {
+    overflow: hidden;
+
+    .container {
+        position: relative;
+        z-index: 1;
+
+        .upperElements {
+
+            @media (max-width: $sm) {
+                justify-content: center;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+
+            .highlight {
+                line-height: 25px;
+            }
+
+        }
+
+        .person {
+
+            @media (max-width: $sm), (max-width: $md) {
+                position: relative;
+                left: 0;
+                background-size: 20rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-position: bottom;
+            }
+
+            position: absolute;
+            bottom: -2rem;
+            margin: auto;
+            background-image: url('../splash.png');
+            background-repeat: no-repeat;
+            background-size: 23rem;
+            left: 33%;
+
+            img {
+                @media  (max-width: $sm) {
+                    width: 23rem;
+                }
+            }
+
+        }
+
+        .lowerElements {
+
+            @media (max-width: $sm), (max-width: $md) {
+                margin-top: 4rem;
+                justify-content: center;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            margin-top: 12rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+
+            .location {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                >:nth-child(2) {
+                    line-height: 25px;
+                }
+            }
+
+            .emailContainer {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                >:nth-child(2) {
+                    line-height: 25px;
+                }
+                .email {
+                    color: orange;
+                }
+
+            }
+        }
+
+    }
+}
