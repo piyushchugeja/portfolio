@@ -6,7 +6,7 @@ import { BiMenuAltRight } from "react-icons/bi";
 import useHeaderShadow from "../../hooks/useHeaderShadow";
 
 const Header = () => {
-	const [menuOpen, setMenuOpen] = useState(false);
+	const [menuOpened, setMenuOpened] = useState(false);
 	const headerShadow = useHeaderShadow();
 	return (
 		<motion.div
@@ -14,7 +14,7 @@ const Header = () => {
 			whileInView="show"
 			variants={headerVariants}
 			viewport={{ once: false, amount: 0.25 }}
-			className={`paddings ${css.wrapper}`}
+			className={`bg-primary paddings ${css.wrapper}`}
 			style={{ boxShadow: headerShadow }}
 		>
 			<div className={`flexCenter innerWidth ${css.container}`}>
@@ -22,7 +22,7 @@ const Header = () => {
 					<img src="/logo.svg" alt="logo" />
 				</div>
 				<ul className={`flexCenter ${css.menu}`}
-				style={getMenuStyles(menuOpen)}>
+				style={getMenuStyles(menuOpened)}>
 					<li>
 						<a href="">About</a>
 					</li>
@@ -44,7 +44,7 @@ const Header = () => {
 				</ul>
 
 				<div className={css.menuIcon}
-					onClick={() => setMenuOpen((prev) => !prev)}
+					onClick={() => setMenuOpened((prev) => !prev)}
 				>
 					<BiMenuAltRight size={30} />
 				</div>

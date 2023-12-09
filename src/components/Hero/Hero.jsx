@@ -23,7 +23,7 @@ const Hero = () => {
                     <motion.span
                         variants={fadeIn("left", "tween", 0.4, 1)}
                         className='secondaryText'>
-                        <div className={css.highlight}> I am a Web Developer</div>
+                        <div className={css.highlight}> A Web Developer</div>
                         <div>&amp; an AI enthusiast.</div>
                     </motion.span>
                 </div>

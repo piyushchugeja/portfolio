@@ -1,0 +1,37 @@
+@import '../../styles/constants.scss';
+
+.wrapper {
+    background-color: white;
+
+    .container {
+        gap: 2rem;
+        flex-wrap: wrap;
+
+        >div {
+            flex: 1;
+        }
+        
+        .leftSide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            img {
+                width: 80%;
+                height: auto;
+            }
+        }
+
+        .rightSide {
+            text-align: justify;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        @media (max-width: $md) {
+            flex-direction: column;
+        }
+    }
+}
