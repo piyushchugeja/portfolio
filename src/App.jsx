@@ -1,4 +1,5 @@
 import About from "./components/About/About";
+import Education from "./components/Education/Education";
 import Header from "./components/Header/Header";
 import Hero from "./components/Hero/Hero";
 import css from './styles/app.module.scss';
@@ -8,6 +9,7 @@ const App = () => {
 			<Header />
 			<Hero />
 			<About />
+			<Education />
 		</div>
 	)
 };

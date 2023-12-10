@@ -27,26 +27,26 @@ export const aboutMe = [
 	"I also like to challenge myself by participating in hackathons and coding competitions, where I can apply my skills and knowledge to real-world scenarios."
 ];
 
-export const workExp = [
+export const educationDetails = [
 	{
-		place: "Self-Employed, Brisbane",
-		tenure: "Aug 2014 - Sep 2016",
-		role: "Visual Designer",
-		detail:
-			"A visual desginer dsesign for a variety of platoforms, may include internet and internet sites, games, movies, kioasks and wearbies. In short, they create the concepts",
+		institute: "VES Institute of Technology, Chembur",
+		duration: "2022 - 2025",
+		course: "B.E. in Computer Engineering",
+		details: ["CGPI: 10.0", "Web Development Lead at GDSC VESIT"],
+		color: "#286F6C",
 	},
 	{
-		place: "New Man Services",
-		tenure: "Aug 2014 - Sep 2016",
-		role: "UI/UX Designer",
-		detail:
-			"A visual desginer dsesign for a variety of platoforms, may include internet and internet sites, games, movies, kioasks and wearbies. In short, they create the concepts",
+		institute: "VES Polytechnic, Chembur",
+		duration: "2019 - 2022",
+		course: "Diploma in Computer Engineering",
+		details: ["Result: 95.60%", "Ranked 2nd in college"],
+		color: "#EEC048",
 	},
 	{
-		place: "Global Solution",
-		tenure: "Aug 2014 - Sep 2016",
-		role: "Sr. Product Designer",
-		detail:
-			"A visual desginer dsesign for a variety of platoforms, may include internet and internet sites, games, movies, kioasks and wearbies. In short, they create the concepts",
+		institute: "Sri Ma Bal Niketan High School, Thane",
+		duration: "2008 - 2019",
+		course: "SSC (10th)",
+		details: ["Result: 92.80%"],
+		color: "#F26440",
 	},
 ];
