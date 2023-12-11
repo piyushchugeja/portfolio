@@ -50,3 +50,33 @@ export const educationDetails = [
 		color: "#F26440",
 	},
 ];
+
+export const workDetails = [
+	{
+		organization: "Securetain",
+		duration: "July 2021 - September 2021",
+		role: "Full stack developer (Intern)",
+		details: ["Remodeled various parts of the website",
+			"Maintained all live websites and made them efficient"
+		],
+		color: "#286F6C",
+	},
+	{
+		organization: "Offiql Technologies",
+		duration: "September 2020 - December 2020",
+		role: "Content writer (Intern)",
+		details: ["Composed several articles related to advertisements and its importance",
+			"Learnt about marketing, advertising, and brand building"
+		],
+		color: "#EEC048",
+	},
+	{
+		organization: "Ratan Super Market",
+		duration: "July 2020 - October 2020",
+		role: "Database Manager (Intern)",
+		details: ["Maintained and managed their customer database",
+			"Updated inventory on day-to-day basis"
+		],
+		color: "#F26440",
+	},
+];
