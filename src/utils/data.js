@@ -134,3 +134,41 @@ export const skills = [
 		alt: "Canva",
 	}
 ];
+
+export const projects = [
+	{
+		imageUrl: "/ayurpharma.png",
+		title: "AyurPharma",
+		description: "By analyzing user queries in natural language, AyurPharma offers personalized recommendations for Ayurvedic drugs and formulations, enhancing accessibility to traditional remedies.",
+		techStack: ["ChatGPT", "JavaScript", "HTML", "CSS"],
+		link: "https://piyushchugeja.github.io/sih-ayurpharma/chat.html"
+	},
+	{
+		imageUrl: "/carboneutral.png",
+		title: "CarboNeutral",
+		description: "A website to calculate your carbon footprint and help you reduce it. Organizations can take personal assessments to collect personalized suggestions and work on them.",
+		techStack: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
+		link: "https://devfolio.co/projects/carboneutral-068e"
+	},
+	{
+		imageUrl: "/attendance.png",
+		title: "Facial recognition based attendance system",
+		description: "This system takes attendance electronically with the help of face recognition. Attendance is marked after student identification.",
+		techStack: ["Python", "OpenCV", "PyQt5"],
+		link: "https://github.com/piyushchugeja/face-recognition-based-attendance"
+	},
+	{
+		imageUrl: "/password_manager.png",
+		title: "Password manager",
+		description: "A password manager using Java. Users can securely save their passwords, create secure passwords or test password strength.",
+		techStack: ["Java", "MySQL", "JDBC"],
+		link: "https://github.com/piyushchugeja/password-manager"
+	},
+	{
+		imageUrl: "/form.png",
+		title: "Voice assistant for form filling",
+		description: "This project is a voice-controlled form filling application built using Python and speech recognition library. The application allows users to fill out a form by speaking the responses instead of typing them.",
+		techStack: ["Python", "SpeechRecognition", "Tkinter"],
+		link: "https://github.com/piyushchugeja/Voice-assistant-for-form-filling"
+	}
+];
