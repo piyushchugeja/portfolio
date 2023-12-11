@@ -2,6 +2,7 @@ import About from "./components/About/About";
 import Education from "./components/Education/Education";
 import Header from "./components/Header/Header";
 import Hero from "./components/Hero/Hero";
+import Technologies from "./components/Technologies/Technologies";
 import WorkExperience from "./components/WorkExperience/WorkExperience";
 import css from './styles/app.module.scss';
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
 			<Hero />
 			<About />
 			<Education />
+			<Technologies />
 			<WorkExperience	/>
 		</div>
 	)

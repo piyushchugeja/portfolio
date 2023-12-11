@@ -1,27 +1,3 @@
-import { HiOutlineDesktopComputer } from "react-icons/hi";
-import { CiMobile1 } from "react-icons/ci";
-import { MdWorkspacesOutline } from "react-icons/md";
-export const projectExperience = [
-	{
-		name: "Website Design",
-		projects: 76,
-		icon: HiOutlineDesktopComputer,
-		bg: "#286F6C",
-	},
-	{
-		name: "Mobile App Design",
-		projects: 63,
-		icon: CiMobile1,
-		bg: "#EEC048",
-	},
-	{
-		name: "Brand Identity",
-		projects: 47,
-		icon: MdWorkspacesOutline,
-		bg: "#F26440",
-	},
-];
-
 export const aboutMe = [
 	"I'm a computer engineering student who is passionate about coding and creating innovative solutions for complex problems. I'm a curious, quick and lifelong learner who is always eager to explore new technologies and frameworks.",
 	"I also like to challenge myself by participating in hackathons and coding competitions, where I can apply my skills and knowledge to real-world scenarios."
@@ -79,4 +55,82 @@ export const workDetails = [
 		],
 		color: "#F26440",
 	},
+];
+
+export const skills = [
+	{
+		name: "C",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
+		alt: "C programming language",
+	},
+	{
+		name: "C++",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+		alt: "C++ programming language",
+	},
+	{
+		name: "Java",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+		alt: "Java programming language",
+	},
+	{
+		name: "Python",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+		alt: "Python programming language",
+	},
+	{
+		name: "HTML",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+		alt: "HTML",
+	},
+	{
+		name: "CSS",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
+		alt: "CSS",
+	},
+	{
+		name: "JavaScript",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+		alt: "JavaScript programming language",
+	},
+	{
+		name: "MySQL",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+		alt: "MySQL",
+	},
+	{
+		name: "PHP",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg",
+		alt: "PHP",
+	},
+	{
+		name: "React",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+		alt: "React",
+	},
+	{
+		name: "Git",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+		alt: "Git",
+	},
+	{
+		name: "GitHub",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
+		alt: "GitHub",
+	},
+	{
+		name: "VS Code",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg",
+		alt: "VS Code",
+	},
+	{
+		name: "Android",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg",
+		alt: "Android",
+	},
+	{
+		name: "Canva",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg",
+		alt: "Canva",
+	}
 ];

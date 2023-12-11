@@ -1,0 +1,72 @@
+@import '../../styles/constants.scss';
+
+.wrapper {
+    background-color: white;
+
+    .container {
+        gap: 2rem;
+        flex-wrap: wrap;
+        align-items: flex-start;
+
+        >div {
+            flex: 1;
+        }
+        
+        .leftSide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            text-align: justify;
+        }
+
+        .rightSide {
+            text-align: justify;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+
+            .skills {
+                display: flex;
+                flex-direction: column;
+                margin: auto;
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+
+                .skillsGrid {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 2.8rem;
+                    grid-auto-rows: auto;
+                    height: auto;
+                    
+                    img {
+                        width: 100px;
+                        height: 100px;
+                    }
+                }
+            }
+
+            @media screen and (max-width: $sm) {
+                .skills {
+                    .skillsGrid {
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 1.8rem;
+
+                        img {
+                            height: 80px;
+                            width: 80px;
+                        }
+                    }
+                }
+            }
+        }
+
+        @media (max-width: $md) {
+            flex-direction: column;
+        }
+    }
+}
