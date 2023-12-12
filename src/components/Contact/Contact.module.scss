@@ -57,8 +57,10 @@
                         width: fit-content;
                         padding: 0.5rem;
                         border-radius: 0.5rem;
+                        font-size: medium;
                         border: 1px solid $secondary;
-                        background: $secondary-white;
+                        background: $secondary;
+                        color: white;
                         cursor: pointer;
                     }
                 }
