@@ -2,7 +2,7 @@
 
 .wrapper {
 	background: white;
-	overflow: hidden;
+	opacity: 1;
 
 	.container {
 		flex-direction: column;
@@ -28,6 +28,7 @@
 			.cardContainerAnchor {
 				text-decoration: none;
 				color: inherit;
+				
 				.card {
 					display: flex;
 					flex-direction: column;
@@ -36,6 +37,7 @@
 					box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.15);
 					border-radius: 1em;
 					background: $secondary-white;
+					opacity: 1;
 					
 					img {
 						max-width: 100%;
@@ -63,7 +65,6 @@
 							}
 						}
 					}
-	
 				}
 			}
 		}

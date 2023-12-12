@@ -24,22 +24,22 @@ const Header = () => {
 				<ul className={`flexCenter ${css.menu}`}
 				style={getMenuStyles(menuOpened)}>
 					<li>
-						<a href="">About</a>
+						<a href="#about">About</a>
 					</li>
 					<li>
-						<a href="">Education</a>
+						<a href="#education">Education</a>
 					</li>
 					<li>
-						<a href="">Technologies</a>
+						<a href="#tech">Technologies</a>
 					</li>
 					<li>
-						<a href="">Work experience</a>
+						<a href="#experience">Work experience</a>
 					</li>
 					<li>
-						<a href="">Projects</a>
+						<a href="#projects">Projects</a>
 					</li>
 					<li>
-						<a href="">Contact</a>
+						<a href="#contact">Contact</a>
 					</li>
 				</ul>
 

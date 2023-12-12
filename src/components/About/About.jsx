@@ -12,6 +12,9 @@ const About = () => {
             whileInView="show"
             viewport={{ once: false, amount: 0.25 }}
             className={css.wrapper}>
+
+            <a className="anchor" id="about"></a>
+
             <div className={`paddings yPaddings innerWidth flexCenter ${css.container}`}>
                 <div className={css.leftSide}>
                     <motion.img variants={fadeIn("right", "tween", 0.2, 0.5)} src="/about2.png" alt="About" />

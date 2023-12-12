@@ -10,8 +10,11 @@ const Projects = () => {
             variants={staggerChildren}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: false, amount: 0.25 }}
+            viewport={{ once: false }}
             className={`paddings ${css.wrapper}`}>
+
+            <a className="anchor" id="projects"></a>
+
             <div className={`innerWidth flexCenter ${css.container}`}>
                 <div className={`flexCenter ${css.heading}`}>
                     <div>
@@ -35,7 +38,8 @@ const Projects = () => {
                                     href={project.link}
                                     target="_blank"
                                     className={css.cardContainerAnchor}
-                                    key={index}>
+                                    key={index}
+                                >
                                     <motion.div
                                         key={index}
                                         className={css.card}

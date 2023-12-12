@@ -16,6 +16,9 @@ const Technologies = () => {
             whileInView="show"
             viewport={{ once: false, amount: 0.25 }}
             className={css.wrapper}>
+
+            <a className="anchor" id="tech"></a>
+
             <div className={`paddings yPaddings innerWidth flexCenter ${css.container}`}>
                 <motion.div 
                 variants={fadeIn("right", "tween", 0.2, 0.5)}

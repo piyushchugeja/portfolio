@@ -12,6 +12,9 @@ const Education = () => {
             whileInView="show"
             viewport={{ once: true, amount: 0.25 }}
             className={`paddings ${css.wrapper}`}>
+
+            <a className="anchor" id="education"></a>
+
             <div className={`flexCenter innerWidth ${css.container}`}>
                 <span className="primaryText yPaddings">
                     Education
