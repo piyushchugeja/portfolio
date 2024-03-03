@@ -11,7 +11,6 @@ const Header = () => {
 	const headerShadow = useHeaderShadow();
 	const menuRef = useRef(null);
 	useOutsideAlerter({ menuRef, setMenuOpened });
-
 	return (
 		<motion.div
 			initial="hidden"

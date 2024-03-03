@@ -1,25 +1,39 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import css from './Contact.module.scss';
 import { motion } from 'framer-motion';
 import { fadeIn, staggerChildren } from '../../utils/motion';
 import emailjs from '@emailjs/browser';
+import Swal from 'sweetalert2';
 
 const Contact = () => {
 
+    const [sending, setSending] = useState(false);
+
     const form = useRef();
 
-    const sendEmail = (e) => {
+    const sendEmail = async (e) => {
         e.preventDefault();
-
-        emailjs.sendForm('service_j521j67', 'template_57ela9l', form.current, 'c7qEP0VudMogVNxlb')
-            .then((result) => {
-                console.log(result.text);
-                alert("Message sent successfully!");
-                form.current.reset();
-            }, (error) => {
-                console.log(error.text);
-                alert("Message not sent. Please try again later.");
+        setSending(true);
+        try {
+            const result = await emailjs.sendForm('service_j521j67', 'template_57ela9l', form.current, 'c7qEP0VudMogVNxlb');
+            console.log(result.text);
+            Swal.fire({
+                title: "Success!",
+                text: "Your message has been sent successfully.",
+                icon: "success",
+                confirmButtonText: "Ok"
             });
+            form.current.reset();
+        } catch (error) {
+            console.log(error.text);
+            Swal.fire({
+                title: "Error!",
+                text: "Something went wrong. Please try again later.",
+                icon: "error",
+                confirmButtonText: "Ok"
+            });
+        }
+        setSending(false);
     }
 
     return (
@@ -58,10 +72,16 @@ const Contact = () => {
                         </div>
                         <div className={css.formGroup}>
                             <label htmlFor="message">Message</label>
-                            <textarea name="message" id="message" cols="30" rows="10" required></textarea>
+                            <textarea name="message" id="message" cols="30" rows="5" required></textarea>
                         </div>
                         <div className={css.formGroup}>
-                            <button type="submit">Send</button>
+                            <button name="submitButton" type="submit">
+                                {
+                                    sending
+                                        ? "Sending..."
+                                        : "Send"
+                                }
+                            </button>
                         </div>
                     </form>
                 </motion.div>
