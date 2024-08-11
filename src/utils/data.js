@@ -29,6 +29,15 @@ export const educationDetails = [
 
 export const workDetails = [
 	{
+		organization: "Barclays",
+		duration: "June 2024 - July 2024",
+		role: "BA3 Summer Analyst (Intern)",
+		details: ["Developed robust and scalable applications",
+			"Migrated existing applications to new technologies"
+		],
+		color: "#F26440",
+	},
+	{
 		organization: "Securetain",
 		duration: "July 2021 - September 2021",
 		role: "Full stack developer (Intern)",
@@ -132,10 +141,22 @@ export const skills = [
 		name: "Canva",
 		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg",
 		alt: "Canva",
+	},
+	{
+		name: "Angular",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg",
+		alt: "Angular",
 	}
 ];
 
 export const projects = [
+	{
+		imageUrl: "/gesturely.png",
+		title: "Gesturely: Converting sign language to text",
+		description: "Gesturely is a deep learning based Indian Sign Language translator which classifies ISL gestures into their respective glosses and converts them into text.",
+		techStack: ["Python", "OpenCV", "TensorFlow"],
+		link: "https://github.com/VESIT-CMPN-Projects/2023-24-TE2"
+	},
 	{
 		imageUrl: "/ayurpharma.png",
 		title: "AyurPharma",
@@ -170,5 +191,5 @@ export const projects = [
 		description: "This project is a voice-controlled form filling application built using Python and speech recognition library. The application allows users to fill out a form by speaking the responses instead of typing them.",
 		techStack: ["Python", "SpeechRecognition", "Tkinter"],
 		link: "https://github.com/piyushchugeja/Voice-assistant-for-form-filling"
-	}
+	},
 ];
