@@ -1,5 +1,5 @@
 export const aboutMe = [
-	"I'm a computer engineering student who is passionate about coding and creating innovative solutions for complex problems. I'm a curious, quick and lifelong learner who is always eager to explore new technologies and frameworks.",
+	"I hold a B.E. in Computer Engineering (hons. Blockchain). I am passionate about coding and creating innovative solutions for complex problems. I'm a curious, quick and lifelong learner who is always eager to explore new technologies and frameworks.",
 	"I also like to challenge myself by participating in hackathons and coding competitions, where I can apply my skills and knowledge to real-world scenarios."
 ];
 
@@ -146,6 +146,11 @@ export const skills = [
 		name: "Angular",
 		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg",
 		alt: "Angular",
+	},
+	{
+		name: "Wordpress",
+		imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain-wordmark.svg",
+		alt: "Wordpress",
 	}
 ];
 
