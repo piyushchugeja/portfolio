@@ -9,7 +9,17 @@ const nonEmpty = z.string().trim().min(1);
 export const linkSchema = z.object({
   label: nonEmpty,
   href: nonEmpty,
-  kind: z.enum(['email', 'github', 'linkedin', 'resume', 'repo', 'live', 'paper', 'writeup']),
+  kind: z.enum([
+    'email',
+    'github',
+    'linkedin',
+    'resume',
+    'repo',
+    'live',
+    'paper',
+    'writeup',
+    'video',
+  ]),
   /** External links get rel/target treatment; internal and mailto don't. */
   external: z.boolean().default(true),
 });
