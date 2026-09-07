@@ -93,9 +93,7 @@ export const chapterSchema = z.object({
 });
 
 export const projectSchema = z.object({
-  slug: z
-    .string()
-    .regex(/^[a-z0-9-]+$/, 'slug must be lowercase kebab-case'),
+  slug: z.string().regex(/^[a-z0-9-]+$/, 'slug must be lowercase kebab-case'),
   title: nonEmpty,
   /** One line, sentence case, no full stop. Sits directly under the title. */
   tagline: nonEmpty,

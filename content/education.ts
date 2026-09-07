@@ -9,9 +9,7 @@ export const education = z.array(educationSchema).parse([
     duration: '2022 – 2025',
     result: '10.00',
     resultLabel: 'CGPI',
-    notes: [
-      'Institute Rank 1 — highest marks in the final year and across the institute',
-    ],
+    notes: ['Institute Rank 1 — highest marks in the final year and across the institute'],
   },
   {
     institute: 'V.E.S. Polytechnic',

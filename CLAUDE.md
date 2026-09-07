@@ -51,11 +51,11 @@ The maintainer works at Barclays and asked that only non-confidential detail app
 
 Everything lives in `app/globals.css`. There is no `tailwind.config.*`.
 
-1. **Semantic tokens** — CSS custom properties named by *purpose* (`--label`, `--label-secondary`, `--separator`, `--fill`, `--bg-elevated`, `--accent`), each with a light / dark / increased-contrast value. Never write a hex at point of use.
+1. **Semantic tokens** — CSS custom properties named by _purpose_ (`--label`, `--label-secondary`, `--separator`, `--fill`, `--bg-elevated`, `--accent`), each with a light / dark / increased-contrast value. Never write a hex at point of use.
 2. **`@theme inline`** bridges them to Tailwind, so `text-label-secondary` emits a `var()` reference and follows runtime scheme switches instead of baking a value.
 3. **Component classes** (`.btn`, `.chip`, `.card`, `.glass`, `.pipeline`, the `.t-*` type scale) sit in `@layer components`; the reset sits in `@layer base`.
 
-**The cascade-layer rule is load-bearing.** Unlayered CSS outranks *every* cascade layer, so an unlayered `p { margin: 0 }` silently beats `mt-8` on that paragraph — this bug once disabled every margin utility on the site. Keep the reset and component classes inside their layers. The custom-property blocks (`:root`, `[data-theme]`, media overrides) stay *unlayered together*, since a layered `:root` would lose to the unlayered defaults.
+**The cascade-layer rule is load-bearing.** Unlayered CSS outranks _every_ cascade layer, so an unlayered `p { margin: 0 }` silently beats `mt-8` on that paragraph — this bug once disabled every margin utility on the site. Keep the reset and component classes inside their layers. The custom-property blocks (`:root`, `[data-theme]`, media overrides) stay _unlayered together_, since a layered `:root` would lose to the unlayered defaults.
 
 ### Design language: Apple HIG
 
@@ -72,7 +72,7 @@ Every text token clears **WCAG AA** on the surfaces it actually sits on. If you 
 
 - **Composite translucent backgrounds** down to an opaque base before computing luminance. Reading `backgroundColor` off a chip or the glass nav gives a meaningless number otherwise.
 - **Disable transitions first.** The 300ms theme transition means a naive `getComputedStyle` read lands mid-swap and returns garbage. Inject `* { transition: none !important }`, force the theme, wait ~90ms, then read.
-- `--accent` and `--accent-strong` are separate on purpose: `#0a84ff` is 5.8:1 as link text on black but only 3.65:1 as a *surface* under white text, so the filled control needs its own darker value.
+- `--accent` and `--accent-strong` are separate on purpose: `#0a84ff` is 5.8:1 as link text on black but only 3.65:1 as a _surface_ under white text, so the filled control needs its own darker value.
 - Filled-control hover **darkens**; any blue light enough to read as "brighter" drops white text below 4.5:1.
 
 ### Animation

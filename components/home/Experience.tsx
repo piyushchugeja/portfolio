@@ -4,12 +4,7 @@ import { roles } from '@/content/roles';
 
 export function Experience() {
   return (
-    <Section
-      id="experience"
-      eyebrow="Experience"
-      title="Where I've worked"
-      tinted
-    >
+    <Section id="experience" eyebrow="Experience" title="Where I've worked" tinted>
       <ol className="flex flex-col">
         {roles.map((role, index) => (
           <Reveal key={`${role.org}-${role.startISO}`} delay={index * 0.05}>

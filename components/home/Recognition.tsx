@@ -4,11 +4,7 @@ import { awards, leadership } from '@/content/recognition';
 
 export function Recognition() {
   return (
-    <Section
-      id="recognition"
-      eyebrow="Recognition"
-      title="Competitions and communities"
-    >
+    <Section id="recognition" eyebrow="Recognition" title="Competitions and communities">
       <div className="grid gap-x-14 gap-y-14 md:grid-cols-2">
         <Reveal>
           <div>

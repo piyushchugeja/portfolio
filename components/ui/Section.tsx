@@ -19,9 +19,7 @@ export function Section({ id, eyebrow, title, lede, children, tinted = false }: 
         <Reveal>
           <p className="t-eyebrow">{eyebrow}</p>
           <h2 className="t-title-1 mt-3 max-w-[24ch]">{title}</h2>
-          {lede ? (
-            <p className="t-body-lg mt-5 max-w-[58ch] text-label-secondary">{lede}</p>
-          ) : null}
+          {lede ? <p className="t-body-lg mt-5 max-w-[58ch] text-label-secondary">{lede}</p> : null}
         </Reveal>
         <div className="mt-12 md:mt-16">{children}</div>
       </div>
