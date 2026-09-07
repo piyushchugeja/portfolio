@@ -820,7 +820,126 @@
       transform: translate3d(0, 110%, 0);
     }
   }
+
+  /* ==========================================================================
+   Labelling cursor (components/chrome/Cursor.tsx).
+
+   Above the sticky nav's z-50, and never intercepts a pointer event. The
+   component only mounts on fine pointers with motion allowed, so these rules
+   are inert on touch.
+   ========================================================================== */
+
+  .cursor-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-standard);
+  }
+
+  /* Hidden until a real mouse has moved, and hidden again over a text field —
+     the native I-beam says where the caret will land, which the ring can't. */
+  .cursor-custom.cursor-on .cursor-layer:not([data-state='text']) {
+    opacity: 1;
+  }
+
+  .cursor-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    border: 1.5px solid var(--label-tertiary);
+    border-radius: var(--r-pill);
+    will-change: transform;
+    transition:
+      min-width var(--dur-fast) var(--ease-out),
+      height var(--dur-fast) var(--ease-out),
+      padding var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  /* Interactive but with nothing worth naming: the ring opens and takes the
+     accent, which is the same signal the focus ring uses. */
+  .cursor-layer[data-state='active'] .cursor-ring {
+    min-width: 44px;
+    height: 44px;
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  /* Named: a filled pill. --accent-strong under --on-accent is the pair already
+     measured to clear AA in all three schemes, so the word is legible wherever
+     on the page it happens to be floating. */
+  .cursor-layer[data-labelled='true'] .cursor-ring {
+    min-width: 0;
+    height: 28px;
+    padding-inline: 0.75rem;
+    border-color: transparent;
+    background: var(--accent-strong);
+  }
+
+  /* Exact, unlagged, so pointing stays precise once the native arrow is gone. */
+  .cursor-dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--label);
+    will-change: transform;
+    transition: opacity var(--dur-fast) var(--ease-standard);
+  }
+
+  .cursor-layer[data-labelled='true'] .cursor-dot {
+    opacity: 0;
+  }
+
+  .cursor-label {
+    max-width: 0;
+    overflow: hidden;
+    color: var(--on-accent);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    opacity: 0;
+    transition:
+      max-width var(--dur-fast) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-standard);
+  }
+
+  .cursor-layer[data-labelled='true'] .cursor-label {
+    max-width: 8rem;
+    opacity: 1;
+  }
 } /* @layer components */
+
+/* Hiding the native cursor has to beat Tailwind's `cursor-*` utilities, and
+   layer order outranks specificity — so this one rule set lives in the
+   utilities layer rather than with the rest of the cursor styles above. Within
+   the layer its specificity settles it. */
+@layer utilities {
+  html.cursor-custom,
+  html.cursor-custom * {
+    cursor: none;
+  }
+
+  /* Text entry keeps its own cursor. Listed after, and at equal specificity, so
+     it wins. */
+  html.cursor-custom input,
+  html.cursor-custom textarea,
+  html.cursor-custom select,
+  html.cursor-custom [contenteditable] {
+    cursor: auto;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {

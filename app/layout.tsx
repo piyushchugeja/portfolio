@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { GlassNav } from '@/components/chrome/GlassNav';
+import { Cursor } from '@/components/chrome/Cursor';
 import { SkipLink } from '@/components/chrome/SkipLink';
 import { Footer } from '@/components/chrome/Footer';
 import { profile } from '@/content/profile';
@@ -73,18 +74,13 @@ function personJsonLd() {
       url: site.url,
       image: absolute('/opengraph-image'),
       address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressCountry: 'IN' },
-      ...(current
-        ? { worksFor: { '@type': 'Organization', name: current.org } }
-        : {}),
+      ...(current ? { worksFor: { '@type': 'Organization', name: current.org } } : {}),
       alumniOf: education.map((entry) => ({
         '@type': 'EducationalOrganization',
         name: entry.institute,
       })),
       knowsAbout: skills.flatMap((group) => group.items),
-      sameAs: [
-        'https://github.com/piyushchugeja',
-        'https://www.linkedin.com/in/piyushchugeja',
-      ],
+      sameAs: ['https://github.com/piyushchugeja', 'https://www.linkedin.com/in/piyushchugeja'],
     },
   };
 }
@@ -103,6 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GlassNav />
         <main id="main">{children}</main>
         <Footer />
+        <Cursor />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
