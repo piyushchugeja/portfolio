@@ -721,6 +721,80 @@
       top: 0;
     }
   }
+
+  /* ==========================================================================
+   Dataflow lattice — the hero's ambient graphic (components/ui/Lattice.tsx).
+
+   It has its own grid column, so no text sits over it and the mask isn't
+   protecting anything — it exists only so the graph ends in air instead of
+   being sliced off at the column boundary. One radial gradient: no mask
+   compositing to get wrong, and no separate -webkit- fallback path.
+
+   Whether it's shown at all is a layout decision (`hidden lg:block` on the
+   wrapper), not an opacity one. Below lg the element still mounts, but a
+   `display: none` parent measures 0×0 and never intersects the viewport, so
+   the canvas is never sized and the frame loop never starts.
+   ========================================================================== */
+
+  .lattice {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(108% 104% at 50% 50%, #000 54%, transparent 100%);
+    mask-image: radial-gradient(108% 104% at 50% 50%, #000 54%, transparent 100%);
+  }
+
+  /* ==========================================================================
+   Page-load reveal — hero only.
+
+   One orchestrated moment at the top of the page instead of effects scattered
+   down it; everything below the fold stays with the single scroll `.reveal`.
+   Both are gated on `.js` for the same reason: without JavaScript the animation
+   never applies, so `both` fill-mode can't leave content stuck invisible.
+
+   `prefers-reduced-motion` is handled by the global block at the foot of this
+   file, which collapses the duration. Since each keyframe set declares only
+   `from`, collapsing lands on the natural state.
+   ========================================================================== */
+
+  .js .lift {
+    animation: lift-in 420ms var(--ease-out) both;
+    animation-delay: var(--lift-delay, 0ms);
+  }
+
+  @keyframes lift-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+    }
+  }
+
+  /* Per-word mask, so the name rises out of its own baseline. Descenders need
+     clip room — "Piyush Chugeja" has three, and .t-display sets line-height to
+     1.05 — and padding with a matching negative margin buys it without moving
+     anything. `overflow: hidden` moves an inline-block's baseline to its bottom
+     margin edge, hence `vertical-align: bottom`. */
+  .mask {
+    display: inline-block;
+    vertical-align: bottom;
+    overflow: hidden;
+    padding-block: 0.14em;
+    margin-block: -0.14em;
+  }
+
+  .js .mask-inner {
+    display: inline-block;
+    animation: mask-rise 620ms var(--ease-out) both;
+    animation-delay: var(--lift-delay, 0ms);
+  }
+
+  @keyframes mask-rise {
+    from {
+      transform: translate3d(0, 110%, 0);
+    }
+  }
 } /* @layer components */
 
 @media (prefers-reduced-motion: reduce) {
