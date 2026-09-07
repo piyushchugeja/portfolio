@@ -77,9 +77,27 @@ Every text token clears **WCAG AA** on the surfaces it actually sits on. If you 
 
 ### Animation
 
-`components/ui/Reveal.tsx` is the only mechanism — one IntersectionObserver flips `data-shown`, CSS transitions the rest. There is **no animation library** (`framer-motion` was removed; it cost ~40 kB of first-load JS). It fires once, and anything already scrolled past at mount shows immediately.
+There is **no animation library** (`framer-motion` was removed; it cost ~40 kB of first-load JS). Three mechanisms, in order of how much of the site they touch:
+
+1. **`components/ui/Reveal.tsx`** — the scroll reveal, used everywhere below the hero. One IntersectionObserver flips `data-shown`, CSS transitions the rest. Fires once, and anything already scrolled past at mount shows immediately.
+2. **The hero load sequence** — pure CSS (`.lift`, `.mask` / `.mask-inner`), staggered by a `--lift-delay` custom property set inline in `components/home/Hero.tsx`. Hero only, on purpose: one orchestrated moment rather than effects scattered down the page. Delays are front-loaded because the `h1` is the LCP element.
+3. **`components/ui/Lattice.tsx`** — the one canvas on the site. See below.
 
 The hidden state is gated on a `.js` class set by the pre-paint script in `app/layout.tsx`, so with JavaScript unavailable nothing is ever invisible. `prefers-reduced-motion` is handled in CSS so it holds before hydration.
+
+### The lattice, and why it isn't behind the text
+
+`components/ui/Lattice.tsx` draws a layered directed graph with pulses running source-to-sink — the same claim `Pipeline` makes on the case studies. It reads `--accent` at runtime and redraws on the theme flip, so **no colour is baked in**. The graph is seeded (`mulberry32`), so it's a designed shape rather than a different random one per load, and it holds direct `Node`/`Edge` object references rather than indices because `noUncheckedIndexedAccess` makes index lookups cost a guard at every read.
+
+It sits in **its own grid column** at `lg`+, not behind the hero copy. A soft radial mask over the text was tried first and can't be made to work: pulse cores peak near full alpha, and feathering them leaves enough colour under the intro to measure **1.52:1** where 4.5:1 is required. Don't reintroduce text over it — the layout separation _is_ the accessibility fix.
+
+Cost control that must survive edits: paused off-screen (IntersectionObserver) and on tab hide, one static frame and no loop under `prefers-reduced-motion`, geometry normalised to [0,1] and only scaled at draw time so a resize never reshapes the graph, and `devicePixelRatio` capped at 2.
+
+### Custom cursor
+
+`components/chrome/Cursor.tsx`, mounted in `app/layout.tsx`. A ring that spring-follows the pointer and expands into a pill naming the action. **Labels are derived from behaviour** (`mailto:` → Email, `target="_blank"` or `.pdf` → Open, a `/work/` href → View), so they can't drift out of sync; `data-cursor="…"` overrides and `data-cursor="none"` opts out. Don't label an element whose own text already says the same word.
+
+The constraints are the reason it's acceptable at all, so keep them: fine pointers only, `prefers-reduced-motion` disables it and restores the native cursor, text fields keep their I-beam, and nothing renders until a real mouse moves. `cursor: none` lives in **`@layer utilities`** — layer order outranks specificity, and it has to beat Tailwind's `cursor-*` utilities.
 
 ### Sections and anchors
 
@@ -99,4 +117,4 @@ Needs `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` (see `.env.exam
 
 No remote origins. Icons are inline paths in `components/ui/Icon.tsx`, replacing the old devicon stylesheet and 17 individual jsDelivr SVG requests. `public/resume.pdf` is linked from the nav and hero.
 
-The featured projects have **no screenshots** — the originals were unusable 375×375 and 500×500 squares. `components/work/Pipeline.tsx` stands in: a token-drawn signal-chain rail, which is also the site's signature element. If real screenshots arrive, route them through `next/image` with explicit dimensions and `sizes`.
+The featured projects have **no screenshots** — the originals were unusable 375×375 and 500×500 squares. `components/work/Pipeline.tsx` stands in: a token-drawn signal-chain rail. It and the hero's `Lattice` are the site's signature, and they say the same thing deliberately — something goes in, stages transform it, something comes out. If real screenshots arrive, route them through `next/image` with explicit dimensions and `sizes`.
