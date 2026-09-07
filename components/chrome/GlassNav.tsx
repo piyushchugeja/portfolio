@@ -17,22 +17,38 @@ export function GlassNav() {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   /* Scroll edge effect. The bar is transparent at rest and only acquires blur
-     and a hairline once content is passing beneath it. rAF-throttled, passive. */
+     and a hairline once content is passing beneath it. rAF-throttled, passive.
+
+     The progress hairline rides the same callback — one listener for both — and
+     is written straight to the node's transform rather than through state,
+     since a set-state per frame would re-render the whole bar while scrolling. */
   useEffect(() => {
     let frame = 0;
     const onScroll = () => {
       if (frame) return;
       frame = requestAnimationFrame(() => {
         setScrolled(window.scrollY > 8);
+
+        const doc = document.documentElement;
+        const scrollable = doc.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(1, window.scrollY / scrollable) : 0;
+        if (progressRef.current) {
+          progressRef.current.style.transform = `scaleX(${progress})`;
+        }
+
         frame = 0;
       });
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+    /* A resize changes scrollHeight, so the ratio has to be recomputed. */
+    window.addEventListener('resize', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
@@ -96,7 +112,7 @@ export function GlassNav() {
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="glass" data-scrolled={scrolled || open}>
+      <div className="glass relative" data-scrolled={scrolled || open}>
         <div className="shell flex h-[var(--nav-h)] items-center justify-between gap-4">
           <Link
             href="/"
@@ -143,6 +159,10 @@ export function GlassNav() {
             </button>
           </div>
         </div>
+
+        {/* Decorative: the same information is already in the scrollbar, so
+            there's nothing here for assistive tech to announce. */}
+        <div ref={progressRef} className="nav-progress" aria-hidden="true" />
       </div>
 
       {/* Opaque, not glass: a full-height sheet over body copy has to be legible

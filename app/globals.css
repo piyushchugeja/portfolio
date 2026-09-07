@@ -747,6 +747,31 @@
   }
 
   /* ==========================================================================
+   Scroll progress.
+
+   On the bar's own bottom edge, so it reads as the separator doing more work
+   rather than as another element. Appears only once the bar itself has, which
+   keeps the resting state as empty as it was.
+   ========================================================================== */
+
+  .nav-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .glass[data-scrolled='true'] .nav-progress {
+    opacity: 1;
+  }
+
+  /* ==========================================================================
    Page-load reveal — hero only.
 
    One orchestrated moment at the top of the page instead of effects scattered
