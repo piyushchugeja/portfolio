@@ -4,6 +4,7 @@ import { GlassNav } from '@/components/chrome/GlassNav';
 import { Cursor } from '@/components/chrome/Cursor';
 import { SkipLink } from '@/components/chrome/SkipLink';
 import { Footer } from '@/components/chrome/Footer';
+import { ToTop } from '@/components/chrome/ToTop';
 import { profile } from '@/content/profile';
 import { roles } from '@/content/roles';
 import { education } from '@/content/education';
@@ -99,6 +100,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GlassNav />
         <main id="main">{children}</main>
         <Footer />
+        {/* Last in the DOM so a keyboard user reaches "back to top" at the end
+            of the page, which is the only place it's useful. */}
+        <ToTop />
         <Cursor />
         <script
           type="application/ld+json"

@@ -2,7 +2,7 @@ import type { SVGProps } from 'react';
 
 type IconProps = SVGProps<SVGSVGElement> & { size?: number };
 
-/* Inline rather than an icon package: nine glyphs don't justify a dependency,
+/* Inline rather than an icon package: a dozen glyphs don't justify a dependency,
    and inlining keeps the third-party origin count at zero. Strokes are 1.5px
    at 24px to sit alongside SF Symbols weights. */
 
@@ -46,6 +46,14 @@ export function ArrowLeft(props: IconProps) {
   return (
     <Svg {...props}>
       <path d="M20 12H5M11 18 5 12l6-6" />
+    </Svg>
+  );
+}
+
+export function ArrowUp(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M12 20V5M6 11l6-6 6 6" />
     </Svg>
   );
 }

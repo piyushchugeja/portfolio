@@ -40,6 +40,11 @@
   --fill: rgb(118 118 128 / 0.12);
   --fill-secondary: rgb(118 118 128 / 0.08);
 
+  /* The only shadow on the site, for the only control that floats over content
+     (.to-top). --bg-elevated is #ffffff here, the same value as the page, so a
+     hairline alone would leave it edgeless against a white section. */
+  --shadow-float: 0 6px 20px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.06);
+
   /* Accent — functional only: links, focus, one primary action per context.
      #0071e3 rather than systemBlue #007aff, which is 4.0:1 on white and
      fails AA at body size. This clears it at 4.7:1.
@@ -95,6 +100,10 @@
     --fill: rgb(120 120 128 / 0.24);
     --fill-secondary: rgb(120 120 128 / 0.14);
 
+    /* Elevation in dark comes mostly from --bg-elevated being lighter than the
+       page; the shadow only has to keep the edge off a near-black surface. */
+    --shadow-float: 0 6px 20px rgb(0 0 0 / 0.7);
+
     --accent: #0a84ff; /*  5.8:1 on --bg — link and focus colour */
     --accent-strong: #0a6ccc; /*  5.2:1 under --on-accent, 4.0:1 on --bg */
     --accent-strong-hover: #0a60b4; /*  6.1:1 under --on-accent */
@@ -122,6 +131,7 @@
   --separator-strong: rgb(255 255 255 / 0.22);
   --fill: rgb(120 120 128 / 0.24);
   --fill-secondary: rgb(120 120 128 / 0.14);
+  --shadow-float: 0 6px 20px rgb(0 0 0 / 0.7);
 
   --accent: #0a84ff;
   --accent-strong: #0a6ccc;
@@ -527,6 +537,55 @@
     .btn {
       min-height: 40px;
     }
+  }
+
+  /* Scroll to top. Appears once a full viewport has gone past — before that
+     there's nothing to go back to and it would just be furniture.
+
+     Opaque, not glass: per HIG, glass in the content layer muddles hierarchy,
+     and the bar is where the site spends that effect. Hover strengthens the
+     hairline and darkens the glyph rather than shifting hue, so the state
+     change survives being read without colour. */
+  .to-top {
+    position: fixed;
+    right: var(--gutter);
+    bottom: max(var(--gutter), env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--separator);
+    border-radius: var(--r-pill);
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-float);
+    color: var(--label-secondary);
+    cursor: pointer;
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out),
+      visibility var(--dur-base) linear,
+      border-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard);
+  }
+
+  /* `visibility` and not just opacity: it takes the button out of the tab order
+     and the accessibility tree, so it can't be reached while it would do
+     nothing. The attribute selector outranks :active and :hover, so the hidden
+     state can't be overridden by a pointer that's still over the last position. */
+  .to-top[data-shown='false'] {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.92);
+  }
+
+  .to-top:hover {
+    border-color: var(--label-tertiary);
+    color: var(--label);
+  }
+
+  .to-top[data-shown='true']:active {
+    transform: scale(0.94);
   }
 
   /* Text link. Underline carries the affordance so colour isn't doing it alone —
@@ -955,7 +1014,14 @@
     scroll-behavior: auto !important;
   }
 
-  .btn:active {
+  .btn:active,
+  .to-top[data-shown='true']:active {
+    transform: none;
+  }
+
+  /* The hidden state stops being an animated offset and becomes a plain
+     absence, so the button appears and disappears without travelling. */
+  .to-top[data-shown='false'] {
     transform: none;
   }
 }
