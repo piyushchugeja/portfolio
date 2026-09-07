@@ -13,14 +13,14 @@ export const projects = z.array(projectSchema).parse([
     year: '2024–2025',
     featured: true,
     summary:
-      'A bot joins the counselling call as a participant and returns a speaker-labelled transcript. An LLM then turns that transcript into a fixed payload — a summary, at least three action items, at least three insights, and who spoke — in whichever of English, Hindi or Marathi the session ran in. The model is the project’s own contribution: Llama 3.1 8B Instruct, fine-tuned for multilingual meeting summarisation with Unsloth and PEFT.',
+      'A bot joins the counselling call and what comes back is a speaker-labelled transcript. The model turns that into a fixed JSON payload — summary, action items, insights, who spoke — in whichever of English, Hindi or Marathi the session ran in. The model is the project’s own: three open-weight families were benchmarked on a hand-built dataset of counselling transcripts, and the best of them, Llama 3.1 8B, was fine-tuned with Unsloth and LoRA until it beat the others on quality and inference time at once.',
     contribution:
-      'The capture and transcript side — bot join/leave controls, live transcript fetching, storage — plus the summarisation and follow-up-question calls layered on top of it. Final-year project, four of us; a teammate built the React shell.',
+      'The capture and transcript side — bot join/leave controls, live transcript fetching, storage — plus the summarisation and follow-up-question calls layered on top of it. Final-year project, four of us and our guide; a teammate built the React shell.',
     stack: ['Python', 'Unsloth + PEFT', 'Llama 3.1 8B', 'Flask', 'FastAPI', 'React', 'DynamoDB'],
     pipeline: [
       { label: 'Meeting', detail: 'A bot joins the call as a participant' },
       { label: 'Transcript', detail: 'Speaker-labelled turns, with durations' },
-      { label: 'Fine-tuned LLM', detail: 'Llama 3.1 8B with a PEFT adapter' },
+      { label: 'Fine-tuned LLM', detail: 'Llama 3.1 8B, 4-bit, LoRA adapter' },
       { label: 'JSON payload', detail: 'Summary, action items, insights, speakers' },
       { label: 'Dashboard', detail: 'Review, talk-time split, ask follow-ups' },
     ],
@@ -36,21 +36,26 @@ export const projects = z.array(projectSchema).parse([
         body: 'Rather than ask a counsellor to record and upload audio, a containerised bot joins the meeting and the backend drives it: join, leave, fetch the transcript as it arrives, store it. Consecutive turns from the same speaker are merged while the transcript is being formatted, which is where the dashboard’s talk-time split comes from — no separate diarisation step to maintain.',
       },
       {
-        eyebrow: 'The model',
-        headline: 'Fine-tuned for three languages on a student GPU budget',
-        body: 'Sessions run in English, Hindi and Marathi, and move between them mid-sentence. Unsloth’s 4-bit loader with a PEFT adapter made an 8B Llama trainable on free Kaggle and Colab GPUs; the adapter is merged back into the base model and served from its own endpoint. The demo app runs the same prompt against a hosted Llama instead, which is the point — what the design fixes is the output contract, not the model behind it.',
+        eyebrow: 'The dataset',
+        headline: 'References written in the shape the dashboard needed',
+        body: 'Nothing public covers career counselling, so the reference set was built by hand: thirty-five transcripts in each of English, Hindi and Marathi, cleaned and annotated. The annotations aren’t prose. Each one is the JSON the interface expects, with the summary, the action items, the insights and the speakers already in their fields — so the model was trained to emit something renderable rather than something that then has to be salvaged by a parser.',
       },
       {
-        eyebrow: 'The output',
-        headline: 'A fixed shape, so the interface can rely on it',
-        body: 'Every call has to come back as the same JSON — summary, action items, insights, speakers — and the prompt is explicit that it must stay inside the transcript and add nothing to it. That is what lets the dashboard render a response without special-casing it, and it is what a follow-up question about the meeting gets answered against.',
+        eyebrow: 'The model',
+        headline: 'Three families in, one model out',
+        body: 'Llama 3, Mistral and DeepSeek were each run over the transcripts zero-shot, one-shot and three-shot to find the strongest candidate in every family, and those three were then fine-tuned with Unsloth’s 4-bit quantisation and LoRA on a Kaggle P100 — batch size two with eight-step gradient accumulation, a 4096-token context, 8-bit AdamW. Llama 3.1 8B won on both counts that mattered: ROUGE-L 0.518 and BERTScore F1 0.938, at 12.3 seconds a transcript against DeepSeek’s 19.2. DeepSeek was dropped for the more interesting reason — it summarised the transcripts it had trained on well and unseen ones badly, and neither a shorter context nor more dropout moved it.',
+      },
+      {
+        eyebrow: 'Deployment',
+        headline: 'The model is real; the GPU to serve it wasn’t',
+        body: 'The tuned adapter is merged back into the base model and served behind a FastAPI endpoint — that is the version the numbers above describe. What a student project can’t do is keep an 8B model resident on a GPU a live demo can reach, so the deployed build sends the same prompt to a hosted Llama and expects the same JSON back. That’s a hosting constraint rather than a design decision, and it costs nothing structurally: the dashboard is written against the contract, so the endpoint can come back without anything above it changing.',
       },
     ],
     specs: [
-      { label: 'Scope', value: 'Meeting bot, backend, fine-tuned model, dashboard' },
-      { label: 'Model', value: 'Llama 3.1 8B Instruct, 4-bit, PEFT adapter' },
-      { label: 'Languages', value: 'English, Hindi, Marathi' },
-      { label: 'Output', value: 'Summary, action items, insights, speakers' },
+      { label: 'Scope', value: 'Meeting bot, dataset, fine-tuned model, dashboard' },
+      { label: 'Model', value: 'Llama 3.1 8B, 4-bit, LoRA adapter' },
+      { label: 'Dataset', value: '105 transcripts, 35 per language' },
+      { label: 'Result', value: 'ROUGE-L 0.518, BERTScore F1 0.938' },
     ],
     links: [
       {
@@ -58,10 +63,15 @@ export const projects = z.array(projectSchema).parse([
         href: 'https://github.com/VESIT-CMPN-Projects/2024-25-BE03',
         kind: 'repo',
       },
+      {
+        label: 'Paper',
+        href: 'https://github.com/VESIT-CMPN-Projects/2024-25-BE03/blob/main/Semester%208/Research%20papers/Unsloth%20PEFT%20based%20Multilingual%20Meeting%20Summarization%20with%20Open%20Source%20LLMs.pdf',
+        kind: 'paper',
+      },
       { label: 'Demo video', href: 'https://www.youtube.com/watch?v=FS94BzPyTb0', kind: 'video' },
     ],
     metaDescription:
-      'CareerLens summarises career counselling meetings in English, Hindi and Marathi using a Llama 3.1 8B model fine-tuned with Unsloth and PEFT.',
+      'CareerLens summarises career counselling meetings in English, Hindi and Marathi with a Llama 3.1 8B model fine-tuned using Unsloth and LoRA.',
   },
   {
     slug: 'gesturely',
