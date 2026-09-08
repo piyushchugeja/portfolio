@@ -1,7 +1,7 @@
 export const site = {
   url: 'https://piyushchugeja.com',
   name: 'Piyush Chugeja',
-  title: 'Piyush Chugeja — Software Engineer',
+  title: 'Piyush Chugeja, Software Engineer',
   locale: 'en_IN',
 } as const;
 

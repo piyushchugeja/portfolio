@@ -8,7 +8,7 @@ export function Skills() {
       id="skills"
       eyebrow="Toolkit"
       title="What I work with"
-      lede="Everything listed here has been used on work that shipped or was assessed — nothing is here to pad the list."
+      lede="Everything listed here has been used on work that shipped or was assessed. Nothing is here to pad the list."
     >
       <dl className="grid gap-x-12 gap-y-0 sm:grid-cols-2">
         {skills.map((group, index) => (

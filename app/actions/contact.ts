@@ -11,7 +11,7 @@ const schema = z.object({
     .string()
     .trim()
     .min(10, 'A sentence or two, so I know what this is about.')
-    .max(4000, 'That is longer than I can read in an email — please trim it.'),
+    .max(4000, 'That is longer than I can read in an email. Please trim it.'),
   /* Honeypot. Real people never see this field, so anything in it is a bot. */
   website: z.string().max(0),
 });
@@ -85,7 +85,7 @@ export async function sendMessage(
   if (rateLimited(ip)) {
     return {
       status: 'error',
-      message: 'That is a few messages in quick succession — try again in a minute.',
+      message: 'That is a few messages in quick succession. Try again in a minute.',
       values,
     };
   }
@@ -124,7 +124,7 @@ export async function sendMessage(
       };
     }
 
-    return { status: 'success', message: 'Thanks — that reached me. I will reply soon.' };
+    return { status: 'success', message: 'Thanks, that reached me. I will reply soon.' };
   } catch (cause) {
     console.error('[contact] Unexpected failure:', cause);
     return {

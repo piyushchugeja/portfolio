@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { featuredProjects, getProject } from '@/lib/projects';
 import { profile } from '@/content/profile';
 
-export const alt = 'Case study — Piyush Chugeja';
+export const alt = 'Case study | Piyush Chugeja';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

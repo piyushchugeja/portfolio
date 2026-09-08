@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { projectSchema } from '@/lib/schema';
 
-/* Only what can be substantiated. Where a fact isn't known — a paper URL, a
-   live demo — the field is left out and the UI renders without it, rather than
+/* Only what can be substantiated. Where a fact isn't known, such as a paper
+   URL or a live demo, the field is left out and the UI renders without it, rather than
    shipping a placeholder or an invented detail. */
 
 export const projects = z.array(projectSchema).parse([
@@ -13,9 +13,9 @@ export const projects = z.array(projectSchema).parse([
     year: '2024–2025',
     featured: true,
     summary:
-      'A bot joins the counselling call and what comes back is a speaker-labelled transcript. The model turns that into a fixed JSON payload — summary, action items, insights, who spoke — in whichever of English, Hindi or Marathi the session ran in. The model is the project’s own: three open-weight families were benchmarked on a hand-built dataset of counselling transcripts, and the best of them, Llama 3.1 8B, was fine-tuned with Unsloth and LoRA until it beat the others on quality and inference time at once.',
+      'A bot joins the counselling call and what comes back is a speaker-labelled transcript. The model turns that into a fixed JSON payload (summary, action items, insights, who spoke) in whichever of English, Hindi or Marathi the session ran in. The model is the project’s own: three open-weight families were benchmarked on a hand-built dataset of counselling transcripts, and the best of them, Llama 3.1 8B, was fine-tuned with Unsloth and LoRA until it beat the others on quality and inference time at once.',
     contribution:
-      'The capture and transcript side — bot join/leave controls, live transcript fetching, storage — plus the summarisation and follow-up-question calls layered on top of it. Final-year project, four of us and our guide; a teammate built the React shell.',
+      'The capture and transcript side: bot join/leave controls, live transcript fetching and storage, plus the summarisation and follow-up-question calls layered on top of it. Final-year project, four of us and our guide; a teammate built the React shell.',
     stack: ['Python', 'Unsloth + PEFT', 'Llama 3.1 8B', 'Flask', 'FastAPI', 'React', 'DynamoDB'],
     pipeline: [
       { label: 'Meeting', detail: 'A bot joins the call as a participant' },
@@ -28,27 +28,27 @@ export const projects = z.array(projectSchema).parse([
       {
         eyebrow: 'The problem',
         headline: 'The advice outlives the session; the record of it usually doesn’t',
-        body: 'What makes a counselling session worth the hour is the conversation — what got covered, what the student is actually weighing up, what they agreed to do next. The write-up of it happens afterwards from memory, or it doesn’t happen. CareerLens produces that record from the session itself.',
+        body: 'What makes a counselling session worth the hour is the conversation: what got covered, what the student is actually weighing up, what they agreed to do next. The write-up of it happens afterwards from memory, or it doesn’t happen. CareerLens produces that record from the session itself.',
       },
       {
         eyebrow: 'Capture',
         headline: 'A bot in the room, not a file upload',
-        body: 'Rather than ask a counsellor to record and upload audio, a containerised bot joins the meeting and the backend drives it: join, leave, fetch the transcript as it arrives, store it. Consecutive turns from the same speaker are merged while the transcript is being formatted, which is where the dashboard’s talk-time split comes from — no separate diarisation step to maintain.',
+        body: 'Rather than ask a counsellor to record and upload audio, a containerised bot joins the meeting and the backend drives it: join, leave, fetch the transcript as it arrives, store it. Consecutive turns from the same speaker are merged while the transcript is being formatted, which is where the dashboard’s talk-time split comes from, with no separate diarisation step to maintain.',
       },
       {
         eyebrow: 'The dataset',
         headline: 'References written in the shape the dashboard needed',
-        body: 'Nothing public covers career counselling, so the reference set was built by hand: thirty-five transcripts in each of English, Hindi and Marathi, cleaned and annotated. The annotations aren’t prose. Each one is the JSON the interface expects, with the summary, the action items, the insights and the speakers already in their fields — so the model was trained to emit something renderable rather than something that then has to be salvaged by a parser.',
+        body: 'Nothing public covers career counselling, so the reference set was built by hand: thirty-five transcripts in each of English, Hindi and Marathi, cleaned and annotated. The annotations aren’t prose. Each one is the JSON the interface expects, with the summary, the action items, the insights and the speakers already in their fields, so the model was trained to emit something renderable rather than something that then has to be salvaged by a parser.',
       },
       {
         eyebrow: 'The model',
         headline: 'Three families in, one model out',
-        body: 'Llama 3, Mistral and DeepSeek were each run over the transcripts zero-shot, one-shot and three-shot to find the strongest candidate in every family, and those three were then fine-tuned with Unsloth’s 4-bit quantisation and LoRA on a Kaggle P100 — batch size two with eight-step gradient accumulation, a 4096-token context, 8-bit AdamW. Llama 3.1 8B won on both counts that mattered: ROUGE-L 0.518 and BERTScore F1 0.938, at 12.3 seconds a transcript against DeepSeek’s 19.2. DeepSeek was dropped for the more interesting reason — it summarised the transcripts it had trained on well and unseen ones badly, and neither a shorter context nor more dropout moved it.',
+        body: 'Llama 3, Mistral and DeepSeek were each run over the transcripts zero-shot, one-shot and three-shot to find the strongest candidate in every family, and those three were then fine-tuned with Unsloth’s 4-bit quantisation and LoRA on a Kaggle P100: batch size two with eight-step gradient accumulation, a 4096-token context, 8-bit AdamW. Llama 3.1 8B won on both counts that mattered: ROUGE-L 0.518 and BERTScore F1 0.938, at 12.3 seconds a transcript against DeepSeek’s 19.2. DeepSeek was dropped for the more interesting reason: it summarised the transcripts it had trained on well and unseen ones badly, and neither a shorter context nor more dropout moved it.',
       },
       {
         eyebrow: 'Deployment',
         headline: 'The model is real; the GPU to serve it wasn’t',
-        body: 'The tuned adapter is merged back into the base model and served behind a FastAPI endpoint — that is the version the numbers above describe. What a student project can’t do is keep an 8B model resident on a GPU a live demo can reach, so the deployed build sends the same prompt to a hosted Llama and expects the same JSON back. That’s a hosting constraint rather than a design decision, and it costs nothing structurally: the dashboard is written against the contract, so the endpoint can come back without anything above it changing.',
+        body: 'The tuned adapter is merged back into the base model and served behind a FastAPI endpoint, and that is the version the numbers above describe. What a student project can’t do is keep an 8B model resident on a GPU a live demo can reach, so the deployed build sends the same prompt to a hosted Llama and expects the same JSON back. That’s a hosting constraint rather than a design decision, and it costs nothing structurally: the dashboard is written against the contract, so the endpoint can come back without anything above it changing.',
       },
     ],
     specs: [
@@ -80,7 +80,7 @@ export const projects = z.array(projectSchema).parse([
     year: '2023–2024',
     featured: true,
     summary:
-      'Gesturely turns Indian Sign Language into readable sentences. Each sign is captured as a short clip, reduced to a sequence of body-pose landmarks rather than pixels, and classified against a 40-word vocabulary. The recognised words then go to a language model with one instruction — make a grammatical sentence out of these and add nothing — and the sentence can be translated and spoken aloud.',
+      'Gesturely turns Indian Sign Language into readable sentences. Each sign is captured as a short clip, reduced to a sequence of body-pose landmarks rather than pixels, and classified against a 40-word vocabulary. The recognised words then go to a language model with one instruction: make a grammatical sentence out of these and add nothing. The sentence can then be translated and spoken aloud.',
     contribution:
       'The gesture models and the path from a landmark sequence to a finished sentence. Three of us on the project at VESIT; the approach was published as a paper.',
     stack: ['Python', 'TensorFlow', 'MediaPipe', 'OpenCV', 'Gemini API', 'Streamlit'],
@@ -95,7 +95,7 @@ export const projects = z.array(projectSchema).parse([
       {
         eyebrow: 'The gap',
         headline: 'Recognising a sign is not the same as reading a sentence',
-        body: 'Most sign-language demos stop at the label: identify the gesture, print its name. Four signs in, what you have is four words with no grammar between them. Closing that last gap — from a list of correct words to something a hearing reader would actually write — is the half of the problem this project spent its time on.',
+        body: 'Most sign-language demos stop at the label: identify the gesture, print its name. Four signs in, what you have is four words with no grammar between them. Closing that last gap, from a list of correct words to something a hearing reader would actually write, is the half of the problem this project spent its time on.',
       },
       {
         eyebrow: 'The input',
@@ -105,12 +105,12 @@ export const projects = z.array(projectSchema).parse([
       {
         eyebrow: 'Honest limits',
         headline: 'Forty words, not an open dictionary',
-        body: 'The vocabulary is a fixed list checked into the repository: forty everyday signs — greetings, places around a college, common objects and states. That makes this a working demonstration rather than a general ISL translator. Adding a word means recording it and retraining, and the last round of exactly that is in the commit history.',
+        body: 'The vocabulary is a fixed list checked into the repository: forty everyday signs: greetings, places around a college, common objects and states. That makes this a working demonstration rather than a general ISL translator. Adding a word means recording it and retraining, and the last round of exactly that is in the commit history.',
       },
       {
         eyebrow: 'The sentence',
         headline: 'Grammar handled by a model, not by rules',
-        body: 'ISL word order is not English word order, so the recognised words need arranging before they read as a sentence. Rather than hand-write reordering rules, the word list goes to a prompted language model told to return one grammatical sentence and invent nothing. Because the handoff between the two halves is only ever a list of words, either side can be swapped without touching the other — the repository ends up carrying two different sentence backends behind the same interface.',
+        body: 'ISL word order is not English word order, so the recognised words need arranging before they read as a sentence. Rather than hand-write reordering rules, the word list goes to a prompted language model told to return one grammatical sentence and invent nothing. Because the handoff between the two halves is only ever a list of words, either side can be swapped without touching the other, and the repository ends up carrying two different sentence backends behind the same interface.',
       },
     ],
     specs: [

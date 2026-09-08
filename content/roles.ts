@@ -15,7 +15,7 @@ export const roles = z.array(roleSchema).parse([
     startISO: '2025-07',
     endISO: null,
     points: [
-      'Build and maintain enterprise applications end to end — Angular and React front ends, Java services behind them, and the SQL Server schemas underneath.',
+      'Build and maintain enterprise applications end to end: Angular and React front ends, Java services behind them, and the SQL Server schemas underneath.',
       'Modernise long-lived Java codebases: moving Spring 4 and JDK 8 services onto current Spring Boot and JDK 21, without interrupting the teams that depend on them.',
       'Deploy and operate services on Kubernetes, and work on the build and release path that gets them there.',
     ],

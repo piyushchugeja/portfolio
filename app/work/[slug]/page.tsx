@@ -32,13 +32,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     alternates: { canonical: `/work/${project.slug}` },
     openGraph: {
       type: 'article',
-      title: `${project.title} — ${profile.name}`,
+      title: `${project.title} | ${profile.name}`,
       description: project.metaDescription,
       url: absolute(`/work/${project.slug}`),
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${project.title} — ${profile.name}`,
+      title: `${project.title} | ${profile.name}`,
       description: project.metaDescription,
     },
   };
