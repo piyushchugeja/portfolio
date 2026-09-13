@@ -1,0 +1,1027 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Semantic tokens.
+
+   Named by PURPOSE, never by value — per HIG "avoid hard-coding system color
+   values." Each has a light / dark / increased-contrast triple.
+
+   Contrast ratios below are measured against the surface each token sits on.
+   All three text levels (`label`, `label-secondary`, `label-tertiary`) clear
+   4.5:1 on both `--bg` and `--bg-secondary`, so any of them is safe on the
+   13px caption text (durations, spec labels, metadata) the site actually uses
+   them for. `label-tertiary` is the quietest that still passes — below it, a
+   value would fail AA at small sizes, so nothing lighter is defined.
+
+   Two accents: `--accent` is the bright link/focus colour, tuned for coloured
+   text on the page surface. `--accent-strong` is a step darker so white text
+   on a filled button clears 4.5:1 — in dark mode the bright accent gives only
+   3.6:1 under white, which is why the filled control needs its own value.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --bg: #ffffff;
+  --bg-secondary: #f5f5f7;
+  --bg-elevated: #ffffff;
+  --glass-bg: rgb(255 255 255 / 0.8);
+
+  /* Text */
+  --label: #1d1d1f; /* 17.0:1 on --bg */
+  --label-secondary: #5f5f66; /*  6.3:1 on --bg,  5.8:1 on --bg-secondary */
+  --label-tertiary: #6e6e73; /*  5.1:1 on --bg,  4.7:1 on --bg-secondary */
+  --placeholder: #a1a1a6;
+
+  /* Lines and fills */
+  --separator: rgb(0 0 0 / 0.1);
+  --separator-strong: rgb(0 0 0 / 0.18);
+  --fill: rgb(118 118 128 / 0.12);
+  --fill-secondary: rgb(118 118 128 / 0.08);
+
+  /* The only shadow on the site, for the only control that floats over content
+     (.to-top). --bg-elevated is #ffffff here, the same value as the page, so a
+     hairline alone would leave it edgeless against a white section. */
+  --shadow-float: 0 6px 20px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.06);
+
+  /* Accent — functional only: links, focus, one primary action per context.
+     #0071e3 rather than systemBlue #007aff, which is 4.0:1 on white and
+     fails AA at body size. This clears it at 4.7:1.
+
+     Hover on the filled control goes *darker*, not brighter. Brightening is the
+     more common treatment (apple.com itself lifts #0071e3 to #0077ed), but any
+     blue light enough to read as "brighter" drops white text below 4.5:1 —
+     #0077ed is 4.3:1. Darkening keeps the state change legible either way. */
+  --accent: #0071e3; /*  4.7:1 on --bg — link and focus colour */
+  --accent-strong: #0071e3; /*  4.7:1 under --on-accent — filled control */
+  --accent-strong-hover: #0064c8; /*  5.7:1 under --on-accent */
+  --on-accent: #ffffff;
+
+  /* Status */
+  --success: #1d7f3f;
+  --danger: #c9252d;
+
+  /* Radii — squircle-adjacent. Progressive enhancement below. */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 22px;
+  --r-pill: 980px;
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 200ms;
+  --dur-base: 300ms;
+  --dur-slow: 400ms;
+
+  /* Layout */
+  --page-max: 1120px;
+  --gutter: 22px;
+  --nav-h: 52px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --bg: #000000;
+    --bg-secondary: #0a0a0a;
+    --bg-elevated: #1c1c1e;
+    --glass-bg: rgb(22 22 23 / 0.8);
+
+    --label: #f5f5f7; /* 18.1:1 on --bg */
+    --label-secondary: #a1a1a6; /*  8.2:1 on --bg */
+    --label-tertiary: #86868b; /*  5.8:1 on --bg */
+    --placeholder: #6e6e73;
+
+    --separator: rgb(255 255 255 / 0.12);
+    --separator-strong: rgb(255 255 255 / 0.22);
+    --fill: rgb(120 120 128 / 0.24);
+    --fill-secondary: rgb(120 120 128 / 0.14);
+
+    /* Elevation in dark comes mostly from --bg-elevated being lighter than the
+       page; the shadow only has to keep the edge off a near-black surface. */
+    --shadow-float: 0 6px 20px rgb(0 0 0 / 0.7);
+
+    --accent: #0a84ff; /*  5.8:1 on --bg — link and focus colour */
+    --accent-strong: #0a6ccc; /*  5.2:1 under --on-accent, 4.0:1 on --bg */
+    --accent-strong-hover: #0a60b4; /*  6.1:1 under --on-accent */
+    --on-accent: #ffffff;
+
+    --success: #30d158;
+    --danger: #ff453a;
+  }
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-elevated: #1c1c1e;
+  --glass-bg: rgb(22 22 23 / 0.8);
+
+  --label: #f5f5f7;
+  --label-secondary: #a1a1a6;
+  --label-tertiary: #86868b;
+  --placeholder: #6e6e73;
+
+  --separator: rgb(255 255 255 / 0.12);
+  --separator-strong: rgb(255 255 255 / 0.22);
+  --fill: rgb(120 120 128 / 0.24);
+  --fill-secondary: rgb(120 120 128 / 0.14);
+  --shadow-float: 0 6px 20px rgb(0 0 0 / 0.7);
+
+  --accent: #0a84ff;
+  --accent-strong: #0a6ccc;
+  --accent-strong-hover: #0a60b4;
+  --on-accent: #ffffff;
+
+  --success: #30d158;
+  --danger: #ff453a;
+}
+
+/* Wider gutters and a taller bar once there's room. Declared here with the
+   other tokens, and deliberately unlayered like them: a layered :root would
+   lose to the unlayered defaults above. */
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 32px;
+    --nav-h: 56px;
+  }
+}
+
+/* Increased contrast — genuinely higher differentiation, not a token alias. */
+@media (prefers-contrast: more) {
+  :root {
+    --label: #000000;
+    --label-secondary: #33333a;
+    --label-tertiary: #52525b;
+    --separator: rgb(0 0 0 / 0.3);
+    --separator-strong: rgb(0 0 0 / 0.55);
+    --fill: rgb(0 0 0 / 0.08);
+    --accent: #0040dd;
+    --accent-strong: #0040dd; /*  7.6:1 under --on-accent */
+    --accent-strong-hover: #0032b0; /* 10.1:1 under --on-accent */
+    --glass-bg: rgb(255 255 255 / 0.94);
+  }
+
+  [data-theme='dark'],
+  :root:not([data-theme='light']) {
+    --label: #ffffff;
+    --label-secondary: #d6d6db;
+    --label-tertiary: #b0b0b8;
+    --separator: rgb(255 255 255 / 0.32);
+    --separator-strong: rgb(255 255 255 / 0.6);
+    --accent: #6cb4ff;
+    /* The filled control inverts here rather than darkening: black on the
+       bright accent is 9.6:1, against 5.2:1 for white on a dark blue. When the
+       user has asked for maximum differentiation, take the 9.6. */
+    --accent-strong: #6cb4ff;
+    --accent-strong-hover: #9acdff; /* 12.6:1 under --on-accent */
+    --on-accent: #000000;
+    --glass-bg: rgb(10 10 11 / 0.94);
+  }
+}
+
+/* ==========================================================================
+   Tailwind theme bridge. `inline` emits var() references rather than
+   resolving values, so utilities follow the scheme switch at runtime.
+   ========================================================================== */
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-label: var(--label);
+  --color-label-secondary: var(--label-secondary);
+  --color-label-tertiary: var(--label-tertiary);
+  --color-placeholder: var(--placeholder);
+  --color-separator: var(--separator);
+  --color-separator-strong: var(--separator-strong);
+  --color-fill: var(--fill);
+  --color-fill-secondary: var(--fill-secondary);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-strong-hover: var(--accent-strong-hover);
+  --color-on-accent: var(--on-accent);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-pill: var(--r-pill);
+
+  --ease-standard: var(--ease-standard);
+  --ease-out-hig: var(--ease-out);
+
+  /* One family: the platform system face. Zero webfont downloads —
+     per HIG, don't embed system fonts, and minimize typefaces. */
+  --font-sans:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+    'Segoe UI Variable Text', 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas,
+    monospace;
+
+  --breakpoint-xs: 30rem;
+}
+
+/* ==========================================================================
+   Base
+
+   In @layer base, not unlayered: unlayered CSS outranks every cascade layer,
+   so an unlayered `p { margin: 0 }` silently beats `mt-8` on that paragraph.
+   Layering the reset puts Tailwind's utilities back in charge.
+   ========================================================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--label);
+    font-family: var(--font-sans);
+    font-size: 17px; /* HIG body default. Nothing on this site goes below 13px. */
+    line-height: 1.5;
+    font-weight: 400;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-synthesis-weight: none;
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    font-weight: 600; /* Regular / Medium / Semibold / Bold only.
+                       HIG: "in general, avoid light font weights." */
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Anchors clear the sticky nav without the old `.anchor { top: -100px }` hack. */
+  :target,
+  [id] {
+    scroll-margin-top: calc(var(--nav-h) + 32px);
+  }
+
+  /* Numbers align in columns wherever they carry meaning. */
+  time,
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 24%, transparent);
+  }
+
+  /* ==========================================================================
+   Focus. Keyboard users get a visible ring everywhere; pointer users don't.
+   ========================================================================== */
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--r-sm);
+  }
+} /* @layer base */
+
+/* ==========================================================================
+   Everything below is @layer components, for the same reason: a utility in
+   the markup should always be able to override a class defined here.
+   ========================================================================== */
+
+@layer components {
+  /* ==========================================================================
+   Type scale
+   ========================================================================== */
+
+  .t-display {
+    font-size: clamp(2.5rem, 1.35rem + 4.6vw, 4.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+  }
+
+  .t-title-1 {
+    font-size: clamp(2rem, 1.45rem + 2.2vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    font-weight: 600;
+  }
+
+  .t-title-2 {
+    font-size: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
+    line-height: 1.18;
+    letter-spacing: -0.021em;
+    font-weight: 600;
+  }
+
+  .t-title-3 {
+    font-size: 1.3125rem; /* 21px */
+    line-height: 1.28;
+    letter-spacing: -0.014em;
+    font-weight: 600;
+  }
+
+  .t-headline {
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.4;
+    letter-spacing: -0.008em;
+    font-weight: 600;
+  }
+
+  .t-body-lg {
+    font-size: clamp(1.1875rem, 1.06rem + 0.5vw, 1.4375rem);
+    line-height: 1.45;
+    letter-spacing: -0.012em;
+    font-weight: 400;
+  }
+
+  .t-body {
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.55;
+    letter-spacing: -0.004em;
+  }
+
+  .t-callout {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+  }
+
+  .t-subhead {
+    font-size: 0.9375rem; /* 15px */
+    line-height: 1.45;
+  }
+
+  .t-footnote {
+    font-size: 0.8125rem; /* 13px — the floor */
+    line-height: 1.4;
+  }
+
+  /* Eyebrow: the one place tracking opens up, to read as a label not a heading. */
+  .t-eyebrow {
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--label-secondary);
+  }
+
+  /* ==========================================================================
+   Layout primitives
+   ========================================================================== */
+
+  .shell {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    padding-block: clamp(4rem, 2rem + 7vw, 7.5rem);
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--separator);
+    margin: 0;
+  }
+
+  /* ==========================================================================
+   Liquid Glass — the functional layer ONLY.
+
+   Per the HIG reference, glass belongs to controls and navigation. Applying
+   it to content "creates unnecessary complexity and confusing visual
+   hierarchy," so cards and sections on this site stay fully opaque.
+
+   `--glass-bg` sits at 0.8, not the 0.72 it started at: the hero's filled
+   button scrolls beneath the bar, and 0.72 let enough accent blue through to
+   drop the nav labels to 4.26:1. 0.8 holds them at 4.8:1 against the worst
+   surface the bar can overlap, and the blur still does the visual work.
+   ========================================================================== */
+
+  .glass {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: saturate(1.4) blur(28px);
+    backdrop-filter: saturate(1.4) blur(28px);
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      border-color var(--dur-base) var(--ease-standard),
+      -webkit-backdrop-filter var(--dur-base) var(--ease-standard),
+      backdrop-filter var(--dur-base) var(--ease-standard);
+  }
+
+  /* Scroll edge effect: the separator and blur only materialise once content
+   is actually passing beneath the bar. At rest the nav is invisible. */
+  .glass[data-scrolled='false'] {
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .glass[data-scrolled='true'] {
+    border-bottom-color: var(--separator);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass[data-scrolled='true'] {
+      background: var(--bg);
+    }
+  }
+
+  /* ==========================================================================
+   Controls. Touch targets >=44px, pointer targets >=24px.
+   ========================================================================== */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.6875rem 1.375rem;
+    border: 1px solid transparent;
+    border-radius: var(--r-pill);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.008em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard),
+      transform var(--dur-fast) var(--ease-standard),
+      opacity var(--dur-fast) var(--ease-standard);
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .btn-primary {
+    background: var(--accent-strong);
+    color: var(--on-accent);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-strong-hover);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border-color: var(--separator-strong);
+    color: var(--label);
+  }
+
+  .btn-secondary:hover {
+    background: var(--fill-secondary);
+    border-color: var(--label-tertiary);
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  @media (min-width: 48rem) {
+    .btn {
+      min-height: 40px;
+    }
+  }
+
+  /* Scroll to top. Appears once a full viewport has gone past — before that
+     there's nothing to go back to and it would just be furniture.
+
+     Opaque, not glass: per HIG, glass in the content layer muddles hierarchy,
+     and the bar is where the site spends that effect. Hover strengthens the
+     hairline and darkens the glyph rather than shifting hue, so the state
+     change survives being read without colour. */
+  .to-top {
+    position: fixed;
+    right: var(--gutter);
+    bottom: max(var(--gutter), env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--separator);
+    border-radius: var(--r-pill);
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-float);
+    color: var(--label-secondary);
+    cursor: pointer;
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out),
+      visibility var(--dur-base) linear,
+      border-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard);
+  }
+
+  /* `visibility` and not just opacity: it takes the button out of the tab order
+     and the accessibility tree, so it can't be reached while it would do
+     nothing. The attribute selector outranks :active and :hover, so the hidden
+     state can't be overridden by a pointer that's still over the last position. */
+  .to-top[data-shown='false'] {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.92);
+  }
+
+  .to-top:hover {
+    border-color: var(--label-tertiary);
+    color: var(--label);
+  }
+
+  .to-top[data-shown='true']:active {
+    transform: scale(0.94);
+  }
+
+  /* Text link. Underline carries the affordance so colour isn't doing it alone —
+   per HIG, "avoid relying solely on color to indicate interactivity." */
+  .link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    transition: text-decoration-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .link:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  /* Inline chip for technologies. Shape + weight, not colour, does the work. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1875rem 0.625rem;
+    border-radius: var(--r-pill);
+    background: var(--fill);
+    color: var(--label-secondary);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--separator);
+    border-radius: var(--r-md);
+  }
+
+  /* True squircles where the engine can draw them. Rounded rects elsewhere. */
+  @supports (corner-shape: squircle) {
+    .card,
+    .btn,
+    .chip {
+      corner-shape: squircle;
+    }
+  }
+
+  /* ==========================================================================
+   Motion is optional. HIG: "not everyone can or wants to experience motion."
+
+   Reveals are CSS, driven by one IntersectionObserver (components/ui/Reveal).
+   The hidden state hangs off `.js` on <html>, set pre-paint by the inline
+   script in app/layout.tsx — so with JavaScript unavailable nothing is ever
+   hidden, and with JavaScript there's no flash of visible content first.
+   ========================================================================== */
+
+  .reveal {
+    will-change: opacity, transform;
+  }
+
+  .js .reveal:not([data-shown='true']) {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+
+  .js .reveal {
+    transition:
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out);
+  }
+
+  .js .reveal[data-shown='true'] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal,
+    .js .reveal:not([data-shown='true']) {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* ==========================================================================
+   Pipeline — the signature element.
+
+   Every featured project is a chain: something goes in, stages transform it,
+   something comes out. Numbered markers would be defensible here since this
+   genuinely is a sequence, but a signal-chain rail reads as flow rather than
+   as a list, which is the actual semantics. Drawn entirely from tokens, so it
+   costs nothing to download, stays sharp at any size, and follows the scheme.
+   ========================================================================== */
+
+  .pipeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+  }
+
+  .pipeline-dot {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+  }
+
+  .pipeline-label {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    color: var(--label);
+  }
+
+  .pipeline-detail {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--label-secondary);
+    text-wrap: pretty;
+  }
+
+  /* Vertical rail below the breakpoint. */
+  @media (width < 48rem) {
+    .pipeline-stage {
+      position: relative;
+      padding-left: 26px;
+      padding-bottom: 20px;
+    }
+
+    .pipeline-stage::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 13px;
+      bottom: 0;
+      width: 1px;
+      background: var(--separator-strong);
+    }
+
+    .pipeline-stage:last-child {
+      padding-bottom: 0;
+    }
+
+    .pipeline-stage:last-child::before {
+      display: none;
+    }
+
+    .pipeline-dot {
+      left: 0;
+      top: 3px;
+    }
+  }
+
+  /* Horizontal chain above it. Each stage's rule spans its own column, joining
+   its dot to the next one, so the line stops dead at the final stage. */
+  @media (width >= 48rem) {
+    .pipeline {
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+    }
+
+    .pipeline-stage {
+      position: relative;
+      padding-top: 24px;
+      padding-right: 20px;
+    }
+
+    .pipeline-stage::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 5px;
+      height: 1px;
+      background: var(--separator-strong);
+    }
+
+    .pipeline-stage:last-child::before {
+      display: none;
+    }
+
+    .pipeline-dot {
+      left: 0;
+      top: 0;
+    }
+  }
+
+  /* ==========================================================================
+   Dataflow lattice — the hero's ambient graphic (components/ui/Lattice.tsx).
+
+   It has its own grid column, so no text sits over it and the mask isn't
+   protecting anything — it exists only so the graph ends in air instead of
+   being sliced off at the column boundary. One radial gradient: no mask
+   compositing to get wrong, and no separate -webkit- fallback path.
+
+   Whether it's shown at all is a layout decision (`hidden lg:block` on the
+   wrapper), not an opacity one. Below lg the element still mounts, but a
+   `display: none` parent measures 0×0 and never intersects the viewport, so
+   the canvas is never sized and the frame loop never starts.
+   ========================================================================== */
+
+  .lattice {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(108% 104% at 50% 50%, #000 54%, transparent 100%);
+    mask-image: radial-gradient(108% 104% at 50% 50%, #000 54%, transparent 100%);
+  }
+
+  /* ==========================================================================
+   Scroll progress.
+
+   On the bar's own bottom edge, so it reads as the separator doing more work
+   rather than as another element. Appears only once the bar itself has, which
+   keeps the resting state as empty as it was.
+   ========================================================================== */
+
+  .nav-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .glass[data-scrolled='true'] .nav-progress {
+    opacity: 1;
+  }
+
+  /* ==========================================================================
+   Page-load reveal — hero only.
+
+   One orchestrated moment at the top of the page instead of effects scattered
+   down it; everything below the fold stays with the single scroll `.reveal`.
+   Both are gated on `.js` for the same reason: without JavaScript the animation
+   never applies, so `both` fill-mode can't leave content stuck invisible.
+
+   `prefers-reduced-motion` is handled by the global block at the foot of this
+   file, which collapses the duration. Since each keyframe set declares only
+   `from`, collapsing lands on the natural state.
+   ========================================================================== */
+
+  .js .lift {
+    animation: lift-in 420ms var(--ease-out) both;
+    animation-delay: var(--lift-delay, 0ms);
+  }
+
+  @keyframes lift-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+    }
+  }
+
+  /* Per-word mask, so the name rises out of its own baseline. Descenders need
+     clip room — "Piyush Chugeja" has three, and .t-display sets line-height to
+     1.05 — and padding with a matching negative margin buys it without moving
+     anything. `overflow: hidden` moves an inline-block's baseline to its bottom
+     margin edge, hence `vertical-align: bottom`. */
+  .mask {
+    display: inline-block;
+    vertical-align: bottom;
+    overflow: hidden;
+    padding-block: 0.14em;
+    margin-block: -0.14em;
+  }
+
+  .js .mask-inner {
+    display: inline-block;
+    animation: mask-rise 620ms var(--ease-out) both;
+    animation-delay: var(--lift-delay, 0ms);
+  }
+
+  @keyframes mask-rise {
+    from {
+      transform: translate3d(0, 110%, 0);
+    }
+  }
+
+  /* ==========================================================================
+   Labelling cursor (components/chrome/Cursor.tsx).
+
+   Above the sticky nav's z-50, and never intercepts a pointer event. The
+   component only mounts on fine pointers with motion allowed, so these rules
+   are inert on touch.
+   ========================================================================== */
+
+  .cursor-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-standard);
+  }
+
+  /* Hidden until a real mouse has moved, and hidden again over a text field —
+     the native I-beam says where the caret will land, which the ring can't. */
+  .cursor-custom.cursor-on .cursor-layer:not([data-state='text']) {
+    opacity: 1;
+  }
+
+  .cursor-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    border: 1.5px solid var(--label-tertiary);
+    border-radius: var(--r-pill);
+    will-change: transform;
+    transition:
+      min-width var(--dur-fast) var(--ease-out),
+      height var(--dur-fast) var(--ease-out),
+      padding var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  /* Interactive but with nothing worth naming: the ring opens and takes the
+     accent, which is the same signal the focus ring uses. */
+  .cursor-layer[data-state='active'] .cursor-ring {
+    min-width: 44px;
+    height: 44px;
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  /* Named: a filled pill. --accent-strong under --on-accent is the pair already
+     measured to clear AA in all three schemes, so the word is legible wherever
+     on the page it happens to be floating. */
+  .cursor-layer[data-labelled='true'] .cursor-ring {
+    min-width: 0;
+    height: 28px;
+    padding-inline: 0.75rem;
+    border-color: transparent;
+    background: var(--accent-strong);
+  }
+
+  /* Exact, unlagged, so pointing stays precise once the native arrow is gone. */
+  .cursor-dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--label);
+    will-change: transform;
+    transition: opacity var(--dur-fast) var(--ease-standard);
+  }
+
+  .cursor-layer[data-labelled='true'] .cursor-dot {
+    opacity: 0;
+  }
+
+  .cursor-label {
+    max-width: 0;
+    overflow: hidden;
+    color: var(--on-accent);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    opacity: 0;
+    transition:
+      max-width var(--dur-fast) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-standard);
+  }
+
+  .cursor-layer[data-labelled='true'] .cursor-label {
+    max-width: 8rem;
+    opacity: 1;
+  }
+} /* @layer components */
+
+/* Hiding the native cursor has to beat Tailwind's `cursor-*` utilities, and
+   layer order outranks specificity — so this one rule set lives in the
+   utilities layer rather than with the rest of the cursor styles above. Within
+   the layer its specificity settles it. */
+@layer utilities {
+  html.cursor-custom,
+  html.cursor-custom * {
+    cursor: none;
+  }
+
+  /* Text entry keeps its own cursor. Listed after, and at equal specificity, so
+     it wins. */
+  html.cursor-custom input,
+  html.cursor-custom textarea,
+  html.cursor-custom select,
+  html.cursor-custom [contenteditable] {
+    cursor: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn:active,
+  .to-top[data-shown='true']:active {
+    transform: none;
+  }
+
+  /* The hidden state stops being an animated offset and becomes a plain
+     absence, so the button appears and disappears without travelling. */
+  .to-top[data-shown='false'] {
+    transform: none;
+  }
+}
