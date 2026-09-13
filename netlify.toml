@@ -1,0 +1,2 @@
+[build]
+  command = "npm install --os=linux --libc=glibc --cpu=x64 && npm run build"
