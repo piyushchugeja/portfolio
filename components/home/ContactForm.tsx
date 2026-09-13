@@ -1,7 +1,8 @@
 'use client';
 
 import { useActionState } from 'react';
-import { initialContactState, sendMessage } from '@/app/actions/contact';
+import { sendMessage } from '@/app/actions/contact';
+import { initialContactState } from '@/app/actions/contact-state';
 
 const FIELD =
   'mt-2 w-full rounded-md border border-separator-strong bg-bg px-3.5 py-3 text-[17px] text-label placeholder:text-placeholder transition-colors duration-200 focus-visible:border-accent';

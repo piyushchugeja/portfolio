@@ -3,6 +3,7 @@
 import { headers } from 'next/headers';
 import { Resend } from 'resend';
 import { z } from 'zod';
+import type { ContactState } from './contact-state';
 
 const schema = z.object({
   name: z.string().trim().min(1, 'Add your name.').max(120, 'That name is too long.'),
@@ -15,17 +16,6 @@ const schema = z.object({
   /* Honeypot. Real people never see this field, so anything in it is a bot. */
   website: z.string().max(0),
 });
-
-export type ContactState = {
-  status: 'idle' | 'success' | 'error';
-  message?: string;
-  fieldErrors?: Partial<Record<'name' | 'email' | 'message', string>>;
-  /* React 19 resets an uncontrolled form once the action resolves, so a failed
-     submission would otherwise wipe what the person typed. Echo it back. */
-  values?: { name: string; email: string; message: string };
-};
-
-export const initialContactState: ContactState = { status: 'idle' };
 
 /* Best-effort throttle. Serverless instances don't share memory, so this stops
    a burst from one client rather than a distributed flood — the honeypot and
